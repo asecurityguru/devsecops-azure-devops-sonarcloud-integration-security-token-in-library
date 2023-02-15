@@ -4,7 +4,12 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+- group: "SECURE_TOKENS"
+- name: sonar_token
+  value: $[variables.SONARTOKEN]
+
 steps:
 - script: |
-    mvn verify package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=azuredevopsdevsecopsorg -Dsonar.projectKey=azuredevopsdevsecopsprojectkey -Dsonar.login=5929e327fe9e4b5
-  displayName: "Integrate SAST using SonarCloud to populate code coverage in Azure DevOps DevSecOps Pipeline"
+    mvn verify package sonar:sonar -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.organization=azuredevopsdevsecopsorg -Dsonar.projectKey=azuredevopsdevsecopsprojectkey -Dsonar.login=$(sonar_token)
+  displayName: "Integrate SAST scan using SonarCloud with Security Tokesn in ADO Library in DevSecOps Pipeline"
